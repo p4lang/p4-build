@@ -1,0 +1,4 @@
+*.ts
+*.json
+p4_pd
+pd_thrift_gen
