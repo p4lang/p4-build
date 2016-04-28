@@ -28,7 +28,14 @@ $(builddir)/p4_pd/thrift-src/pd_rpc_server.h
 
 P4_JSON_OUTPUT = $(P4_NAME).json
 
-pd_files.ts : $(P4_PATH)
+# TODO(antonin):
+# this is not portable (GNU make extension), but this is the only think I can
+# think of right now to keep track of dependencies
+# anyone with a better solution is welcome to change this
+refdeps := $(shell ../tools/produce_deps.py @P4_PATH@)
+
+pd_files.ts : $(P4_PATH) $(refdeps)
+	echo $(refdeps)
 	@rm -f pd_files.tmp
 	@touch pd_files.tmp
 	PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/p4_pd/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
@@ -67,15 +74,19 @@ pd_thrift_gen/gen-py/p4_pd_rpc/constants.py \
 pd_thrift_gen/gen-py/p4_pd_rpc/__init__.py \
 pd_thrift_gen/gen-py/p4_pd_rpc/ttypes.py \
 pd_thrift_gen/gen-py/p4_pd_rpc/@P4_PREFIX@.py \
-pd_thrift_gen/gen-py/p4_pd_rpc/@P4_PREFIX@-remote \
+pd_thrift_gen/gen-py/p4_pd_rpc/@P4_PREFIX@-remote
+p4pythondir = @pythondir@/bmpd/@P4_NAME@/p4_pd_rpc
+p4python_PYTHON = $(pd_p4_thrift_py)
+
+# TODO(antonin): really necessary to install this again (pdfixed has it)?
+pd_res_thrift_py = \
 pd_thrift_gen/gen-py/res_pd_rpc/constants.py \
 pd_thrift_gen/gen-py/res_pd_rpc/__init__.py \
 pd_thrift_gen/gen-py/res_pd_rpc/ttypes.py
+respythondir = @pythondir@/bmpd/@P4_NAME@/res_pd_rpc
+respython_PYTHON = $(pd_res_thrift_py)
 
-p4pythondir = @pythondir@/bm/@P4_NAME@
-p4python_PYTHON = $(pd_p4_thrift_py)
-
-pd_thrift_files = $(pd_p4_thrift_cxx) $(pd_p4_thrift_py)
+pd_thrift_files = $(pd_p4_thrift_cxx) $(pd_p4_thrift_py) $(pd_res_thrift_py)
 
 pd_thrift_files.ts: $(pd_files) $(pd_p4_IDL) $(pd_res_IDL)
 	@rm -f pd_thrift_files.tmp
@@ -109,16 +120,18 @@ BUILT_SOURCES = \
 $(pd_files) \
 $(pd_thrift_files)
 
-nobase_pkginclude_HEADERS = \
+pdincludedir = $(includedir)/bmpd/@P4_NAME@/pd
+pdinclude_HEADERS = \
 $(pd_headers) \
 p4_pd/thrift-src/pd_rpc_server.h
 
-noinst_LTLIBRARIES = libbmpd.la libbmpdthrift.la
+pdlibdir = $(libdir)/bmpd/@P4_NAME@
+pdlib_LTLIBRARIES = libpd.la libpdthrift.la
 
-libbmpd_la_SOURCES = \
+libpd_la_SOURCES = \
 $(pd_files)
 
-libbmpdthrift_la_SOURCES = \
+libpdthrift_la_SOURCES = \
 $(pd_thrift_files) \
 p4_pd/thrift-src/pd_rpc_server.cpp
 
@@ -135,4 +148,5 @@ pddatadir = $(datadir)/bmpd/@P4_NAME@
 pddata_DATA = $(P4_JSON_OUTPUT)
 
 CLEANFILES = $(BUILT_SOURCES) \
-pd_files.ts pd_thrift_files.ts
+pd_files.ts pd_thrift_files.ts \
+$(P4_JSON_OUTPUT)

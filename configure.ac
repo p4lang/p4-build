@@ -5,7 +5,10 @@ AC_PREREQ([2.68])
 AC_INIT([p4-build], [0.1], [antonin@barefootnetworks.com])
 # This prevents autotools from automatically adding -O2 flag.
 : ${CXXFLAGS=""}
-AM_INIT_AUTOMAKE([-Wportability -Werror foreign subdir-objects])
+AM_INIT_AUTOMAKE([foreign subdir-objects])
+# TODO(antonin): had to comment this out, because I am using a GNU make
+# extension in bmv2/Makefile.am
+# AM_INIT_AUTOMAKE([-Wportability -Werror foreign subdir-objects])
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -38,7 +41,9 @@ AS_IF([test "$check_abs_path" != yes], [
 
 AC_ARG_VAR([P4_PREFIX], [Prefix for the PD APIs])
 AS_IF([test "$P4_PREFIX" = ""], [
-  AC_MSG_ERROR([Environment variable P4_PREFIX needs to be set])
+  AC_MSG_NOTICE([Environment variable P4_PREFIX not set, using P4_NAME])
+  P4_PREFIX="$P4_NAME"
+  AC_SUBST([P4_PREFIX])
 ])
 
 AC_ARG_VAR([P4C_BM_FLAGS], [Options to pass to the p4c-bm compiler])
@@ -125,8 +130,14 @@ AC_SUBST([MY_PYTHONPATH], ["$PYTHON_DIR"])
 AC_CONFIG_FILES([Makefile
                  bmv2/Makefile])
 
+# Generate other files
+AC_CONFIG_FILES([tools/produce_deps.py], [chmod +x tools/produce_deps.py])
+
 AC_OUTPUT
 
 AS_ECHO("")
 AS_ECHO("Features recap ......................")
+AS_ECHO("P4_PATH ....................... : $P4_PATH")
+AS_ECHO("P4_NAME ....................... : $P4_NAME")
+AS_ECHO("P4_PREFIX ..................... : $P4_PREFIX")
 AS_ECHO("Compile for bmv2 .............. : $want_bmv2")
