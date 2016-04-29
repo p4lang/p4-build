@@ -1,30 +1,30 @@
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 
 pd_files = \
-p4_pd/src/pd.cpp \
-p4_pd/src/pd_learning.cpp \
-p4_pd/src/pd_meters.cpp \
-p4_pd/src/pd_counters.cpp \
-p4_pd/src/pd_registers.cpp \
-p4_pd/src/pd_tables.cpp \
-p4_pd/src/pd_ageing.cpp \
-p4_pd/src/pd_mirroring.cpp
+@P4_NAME@/src/pd.cpp \
+@P4_NAME@/src/pd_learning.cpp \
+@P4_NAME@/src/pd_meters.cpp \
+@P4_NAME@/src/pd_counters.cpp \
+@P4_NAME@/src/pd_registers.cpp \
+@P4_NAME@/src/pd_tables.cpp \
+@P4_NAME@/src/pd_ageing.cpp \
+@P4_NAME@/src/pd_mirroring.cpp
 
 pd_headers = \
-p4_pd/pd/pd.h \
-p4_pd/pd/pd_learning.h \
-p4_pd/pd/pd_meters.h \
-p4_pd/pd/pd_counters.h \
-p4_pd/pd/pd_registers.h \
-p4_pd/pd/pd_tables.h \
-p4_pd/pd/pd_types.h \
-p4_pd/pd/pd_mirroring.h
+@P4_NAME@/pd/pd.h \
+@P4_NAME@/pd/pd_learning.h \
+@P4_NAME@/pd/pd_meters.h \
+@P4_NAME@/pd/pd_counters.h \
+@P4_NAME@/pd/pd_registers.h \
+@P4_NAME@/pd/pd_tables.h \
+@P4_NAME@/pd/pd_types.h \
+@P4_NAME@/pd/pd_mirroring.h
 
-pd_p4_IDL = p4_pd/thrift/p4_pd_rpc.thrift
+pd_p4_IDL = @P4_NAME@/thrift/p4_pd_rpc.thrift
 pd_p4_src = \
-$(builddir)/p4_pd/thrift-src/p4_pd_rpc_server.ipp \
-$(builddir)/p4_pd/thrift-src/pd_rpc_server.cpp \
-$(builddir)/p4_pd/thrift-src/pd_rpc_server.h
+$(builddir)/@P4_NAME@/thrift-src/p4_pd_rpc_server.ipp \
+$(builddir)/@P4_NAME@/thrift-src/pd_rpc_server.cpp \
+$(builddir)/@P4_NAME@/thrift-src/pd_rpc_server.h
 
 P4_JSON_OUTPUT = $(P4_NAME).json
 
@@ -37,7 +37,7 @@ refdeps := $(shell ../tools/produce_deps.py @P4_PATH@)
 pd_files.ts : $(P4_PATH) $(refdeps)
 	@rm -f pd_files.tmp
 	@touch pd_files.tmp
-	PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/p4_pd/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
+	PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/$(P4_NAME)/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
 	@mv -f pd_files.tmp $@
 $(pd_files) $(pd_p4_IDL) $(pd_p4_src) : pd_files.ts
 ## Recover from the removal of $@
@@ -122,7 +122,7 @@ $(pd_thrift_files)
 pdincludedir = $(includedir)/bmpd/@P4_NAME@/pd
 pdinclude_HEADERS = \
 $(pd_headers) \
-p4_pd/thrift-src/pd_rpc_server.h
+@P4_NAME@/thrift-src/pd_rpc_server.h
 
 pdlibdir = $(libdir)/bmpd/@P4_NAME@
 pdlib_LTLIBRARIES = libpd.la libpdthrift.la
@@ -132,10 +132,10 @@ $(pd_files)
 
 libpdthrift_la_SOURCES = \
 $(pd_thrift_files) \
-p4_pd/thrift-src/pd_rpc_server.cpp
+@P4_NAME@/thrift-src/pd_rpc_server.cpp
 
 AM_CPPFLAGS = -I$(includedir)
-AM_CPPFLAGS += -I$(builddir)/p4_pd/
+AM_CPPFLAGS += -I$(builddir)/@P4_NAME@/
 AM_CPPFLAGS += -I$(builddir)/pd_thrift_gen/gen-cpp/
 AM_CPPFLAGS += -DHOST_BYTE_ORDER_CALLER
 

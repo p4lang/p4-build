@@ -132,6 +132,7 @@ AC_CONFIG_FILES([Makefile
 
 # Generate other files
 AC_CONFIG_FILES([tools/produce_deps.py], [chmod +x tools/produce_deps.py])
+AC_CONFIG_FILES([bmv2/.gitignore])
 
 AC_OUTPUT
 

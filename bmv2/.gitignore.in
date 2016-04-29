@@ -1,0 +1,7 @@
+*.ts
+*.json
+pd_thrift_gen
+@P4_NAME@
+
+# machiavellico!
+.gitignore
