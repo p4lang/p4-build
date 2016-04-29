@@ -120,9 +120,10 @@ $(pd_files) \
 $(pd_thrift_files)
 
 pdincludedir = $(includedir)/bmpd/@P4_NAME@/pd
-pdinclude_HEADERS = \
-$(pd_headers) \
-@P4_NAME@/thrift-src/pd_rpc_server.h
+pdinclude_HEADERS = $(pd_headers)
+
+pdthriftsrcincludedir = $(includedir)/bmpd/@P4_NAME@/thrift-src
+pdthriftsrcinclude_HEADERS = @P4_NAME@/thrift-src/pd_rpc_server.h
 
 pdlibdir = $(libdir)/bmpd/@P4_NAME@
 pdlib_LTLIBRARIES = libpd.la libpdthrift.la
