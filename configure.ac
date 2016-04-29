@@ -34,7 +34,7 @@ AC_ARG_VAR([P4_PATH], [Path to the P4 program])
 AS_IF([test "$P4_PATH" = ""], [
   AC_MSG_ERROR([Environment variable P4_PATH needs to be set])
 ])
-check_abs_path=$($PYTHON tools/check_p4_path.py $P4_PATH)
+check_abs_path=$($PYTHON $srcdir/tools/check_p4_path.py $P4_PATH)
 AS_IF([test "$check_abs_path" != yes], [
   AC_MSG_ERROR([The P4_PATH you provided does not exist or is not absolute])
 ])
