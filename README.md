@@ -19,8 +19,8 @@ defined: `P4_PATH`, `P4_NAME` and possibly `P4_PREFIX`. You can run `configure
 -h` for more details.
 
     1. ./autogen.sh
-    2. ./configure P4_NAME=<name of P4 program> P4_PATH=<absolute path to P4
-    program> [P4_PREFIX=<prefix to use for PD APIs>]
+    2. ./configure --with-bmv2 P4_NAME=<name of P4 program> P4_PATH=<absolute
+    path to P4 program> [P4_PREFIX=<prefix to use for PD APIs>]
     3. make
     4. make install
 
