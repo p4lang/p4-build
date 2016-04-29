@@ -35,7 +35,6 @@ P4_JSON_OUTPUT = $(P4_NAME).json
 refdeps := $(shell ../tools/produce_deps.py @P4_PATH@)
 
 pd_files.ts : $(P4_PATH) $(refdeps)
-	echo $(refdeps)
 	@rm -f pd_files.tmp
 	@touch pd_files.tmp
 	PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/p4_pd/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
