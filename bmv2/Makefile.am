@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 
+SUBDIRS = . tests
+
 pd_files = \
 @P4_NAME@/src/pd.cpp \
 @P4_NAME@/src/pd_learning.cpp \
@@ -138,7 +140,9 @@ $(pd_thrift_files) \
 AM_CPPFLAGS = -I$(includedir)
 AM_CPPFLAGS += -I$(builddir)/@P4_NAME@/
 AM_CPPFLAGS += -I$(builddir)/pd_thrift_gen/gen-cpp/
+if !BMV2_TEST_ENV
 AM_CPPFLAGS += -DHOST_BYTE_ORDER_CALLER
+endif
 
 if P4THRIFT
     AM_CPPFLAGS += -DP4THRIFT
