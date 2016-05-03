@@ -1,6 +1,8 @@
 # p4-build
 Infrastructure needed to generate, build and install the PD library for a given P4 program
 
+[![Build Status](https://travis-ci.org/p4lang/p4-build.svg?branch=master)](https://travis-ci.org/p4lang/p4-build)
+
 ## Dependencies
 
 [bmv2] (https://github.com/p4lang/behavioral-model) **with pdfixed** needs to be
