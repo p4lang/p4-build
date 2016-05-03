@@ -1,0 +1,60 @@
+# Config file for automatic testing at travis-ci.org
+
+sudo: false
+
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - boost-latest
+      - ubuntu-toolchain-r-test
+    packages:
+      - libjudy-dev
+      - libgmp-dev
+      - libpcap-dev
+      - libboost1.55-dev
+      - libboost-test1.55-dev
+      - libboost-program-options1.55-dev
+      - libboost-system1.55-dev
+      - libboost-filesystem1.55-dev
+      - libboost-thread1.55-dev
+      - libevent-dev
+      - automake
+      - libtool
+      - flex 
+      - bison
+      - pkg-config
+      - g++-4.8
+      - libssl-dev
+
+before_install:
+  - wget https://s3-us-west-2.amazonaws.com/p4lang/thrift_bin.tar.gz
+  - tar -xzvf thrift_bin.tar.gz -C $HOME/
+  - export PATH=$PATH:$HOME/thrift/bin/
+  - export LDFLAGS="$LDFLAGS -L$HOME/thrift/lib"
+  - export CPPFLAGS="$CPPFLAGS -I$HOME/thrift/include"
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/thrift/lib
+  - bash CI/travis/install-nanomsg.sh
+  - export LDFLAGS="$LDFLAGS -L$HOME/nanomsg/lib"
+  - export CPPFLAGS="$CPPFLAGS -I$HOME/nanomsg/include"
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/nanomsg/lib
+  - bash CI/travis/install-bmv2.sh
+  - bash CI/travis/install-p4c-bmv2.sh
+  - export PATH=$PATH:$HOME/bmv2/bin/
+  - export LDFLAGS="$LDFLAGS -L$HOME/bmv2/lib"
+  - export CPPFLAGS="$CPPFLAGS -I$HOME/bmv2/include"
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/bmv2/lib
+
+cache:
+  directories:
+    - $HOME/nanomsg
+
+install:
+  - export P4_NAME="test"
+  - export P4_PREFIX="test"
+  - export P4_PATH="`pwd`/bmv2/tests/test.p4"
+  - ./autogen.sh; ./configure 'CXX=g++-4.8' --with-bmv2; make -j2
+
+script:
+  - make check
