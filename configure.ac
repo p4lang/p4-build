@@ -137,7 +137,6 @@ AC_CONFIG_FILES([Makefile
 
 # Generate other files
 AC_CONFIG_FILES([tools/produce_deps.py], [chmod +x tools/produce_deps.py])
-AC_CONFIG_FILES([bmv2/.gitignore])
 
 AS_IF([test "$want_bmv2" != yes], [
   AC_MSG_WARN([You did not use --with-bmv2 but bmv2 is the only target supported
