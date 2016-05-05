@@ -143,10 +143,13 @@ AS_IF([test "$want_bmv2" != yes], [
                for now])
 ])
 
+AC_PROG_LN_S
+AS_IF([! test -e bmpd], [$LN_S bmv2 bmpd])
+
 AC_OUTPUT
 
 AS_ECHO("")
-AS_ECHO("Features recap ......................")
+AS_ECHO("p4-build features recap ......................")
 AS_ECHO("P4_PATH ....................... : $P4_PATH")
 AS_ECHO("P4_NAME ....................... : $P4_NAME")
 AS_ECHO("P4_PREFIX ..................... : $P4_PREFIX")
