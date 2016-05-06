@@ -302,6 +302,7 @@ public:
   BmRegisterValue bm_register_read(const int32_t cxt_id, const std::string& register_name, const int32_t index) {
     // Your implementation goes here
     printf("bm_register_read\n");
+    return 0;
   }
 
   void bm_register_write(const int32_t cxt_id, const std::string& register_name, const int32_t index, const BmRegisterValue value) {

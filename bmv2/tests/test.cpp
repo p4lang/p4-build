@@ -27,13 +27,13 @@
 
 #include <bm/pdfixed/pd_static.h>
 #include <bm/pdfixed/pd_pre.h>
+#include <bm/pdfixed/pd_mirroring.h>
 
 #include <pd/pd_tables.h>
 #include <pd/pd_meters.h>
 #include <pd/pd_counters.h>
 #include <pd/pd_registers.h>
 #include <pd/pd.h>
-#include <pd/pd_mirroring.h>
 
 #define DEVICE_THRIFT_PORT 9090
 
@@ -202,11 +202,11 @@ int main() {
   p4_pd_test_register_reset_RegisterA(sess_hdl, dev_tgt);
 
   /* mirroring */
-  p4_pd_test_mirror_session_create(sess_hdl, dev_tgt,
-                                   PD_MIRROR_TYPE_NORM, PD_DIR_INGRESS,
-                                   11, 12,
-                                   4096, 0, false,
-                                   0, 0, nullptr, 0);
+  p4_pd_mirror_session_create(sess_hdl, dev_tgt,
+                              PD_MIRROR_TYPE_NORM, PD_DIR_INGRESS,
+                              11, 12,
+                              4096, 0, false,
+                              0, 0, nullptr, 0);
 
   /* learning */
   uint64_t timeout_us = 64000;  // 64 ms
@@ -215,6 +215,10 @@ int main() {
   /* END TEST */
 
   p4_pd_test_remove_device(dev_tgt.device_id);
+
+  p4_pd_client_cleanup(sess_hdl);
+
+  p4_pd_cleanup();
   
   return 0;
 }

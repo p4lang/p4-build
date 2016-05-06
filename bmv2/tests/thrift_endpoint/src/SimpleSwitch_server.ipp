@@ -34,26 +34,31 @@ class SimpleSwitchHandler : virtual public SimpleSwitchIf {
     std::cout << "mirroring_mapping_add" << std::endl
 	      << mirror_id << std::endl
 	      << egress_port << std::endl;
+    return 0;
   }
 
   int32_t mirroring_mapping_delete(const int32_t mirror_id) {
     // Your implementation goes here
     printf("mirroring_mapping_delete\n");
+    return 0;
   }
 
   int32_t mirroring_mapping_get_egress_port(const int32_t mirror_id) {
     // Your implementation goes here
     printf("mirroring_mapping_get_egress_port\n");
+    return 0;
   }
 
   int32_t set_egress_queue_depth(const int32_t depth_pkts) {
     // Your implementation goes here
     printf("set_egress_queue_depth\n");
+    return 0;
   }
 
   int32_t set_egress_queue_rate(const int64_t rate_pps) {
     // Your implementation goes here
     printf("set_egress_queue_rate\n");
+    return 0;
   }
 
 };
