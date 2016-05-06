@@ -10,7 +10,7 @@ pd_files = \
 @P4_NAME@/src/pd_registers.cpp \
 @P4_NAME@/src/pd_tables.cpp \
 @P4_NAME@/src/pd_ageing.cpp \
-@P4_NAME@/src/pd_mirroring.cpp
+@P4_NAME@/src/pd_client.h
 
 pd_headers = \
 @P4_NAME@/pd/pd.h \
@@ -19,8 +19,7 @@ pd_headers = \
 @P4_NAME@/pd/pd_counters.h \
 @P4_NAME@/pd/pd_registers.h \
 @P4_NAME@/pd/pd_tables.h \
-@P4_NAME@/pd/pd_types.h \
-@P4_NAME@/pd/pd_mirroring.h
+@P4_NAME@/pd/pd_types.h
 
 pd_p4_IDL = @P4_NAME@/thrift/p4_pd_rpc.thrift
 pd_p4_src = \
