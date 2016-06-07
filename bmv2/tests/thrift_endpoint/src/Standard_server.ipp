@@ -60,11 +60,16 @@ public:
       break;
     case BmMatchParamType::type::TERNARY:
       std::cout << "TERNARY: "
-		<<ToHex(param.ternary.key) << "&&&" << ToHex(param.ternary.mask);
+		<< ToHex(param.ternary.key) << "&&&"
+                << ToHex(param.ternary.mask);
       break;
     case BmMatchParamType::type::VALID:
       std::cout << "VALID: "
-		<<std::boolalpha << param.valid.key << std::noboolalpha;
+		<< std::boolalpha << param.valid.key << std::noboolalpha;
+      break;
+    case BmMatchParamType::type::RANGE:
+      std::cout << "RANGE: "
+		<< ToHex(param.range.start) << "->" << ToHex(param.range.end_);
       break;
     default:
       assert(0 && "invalid match type");
@@ -236,6 +241,26 @@ public:
     }
   }
 
+  void bm_mt_get_entries(std::vector<BmMtEntry> & _return, const int32_t cxt_id, const std::string& table_name) {
+    // Your implementation goes here
+    printf("bm_mt_get_entries\n");
+  }
+
+  void bm_mt_get_default_entry(BmActionEntry& _return, const int32_t cxt_id, const std::string& table_name) {
+    // Your implementation goes here
+    printf("bm_mt_get_default_entry\n");
+  }
+
+  void bm_mt_indirect_get_members(std::vector<BmMtIndirectMember> & _return, const int32_t cxt_id, const std::string& table_name) {
+    // Your implementation goes here
+    printf("bm_mt_indirect_get_members\n");
+  }
+
+  void bm_mt_indirect_ws_get_groups(std::vector<BmMtIndirectWsGroup> & _return, const int32_t cxt_id, const std::string& table_name) {
+    // Your implementation goes here
+    printf("bm_mt_indirect_ws_get_groups\n");
+  }
+
   void bm_counter_read(BmCounterValue& _return, const int32_t cxt_id, const std::string& counter_name, const int32_t index) {
     std::cout << "bm_counter_read" << std::endl
 	      << counter_name << std::endl
@@ -335,9 +360,19 @@ public:
     printf("bm_dev_mgr_show_ports\n");
   }
 
-  void bm_dump_table(std::string& _return, const int32_t cxt_id, const std::string& table_name) {
+  void bm_mgmt_get_info(BmConfig& _return) {
     // Your implementation goes here
-    printf("bm_dump_table\n");
+    printf("bm_mgmt_get_info\n");
+  }
+
+  void bm_set_crc16_custom_parameters(const int32_t cxt_id, const std::string& calc_name, const BmCrc16Config& crc16_config) {
+    // Your implementation goes here
+    printf("bm_set_crc16_custom_parameters\n");
+  }
+
+  void bm_set_crc32_custom_parameters(const int32_t cxt_id, const std::string& calc_name, const BmCrc32Config& crc32_config) {
+    // Your implementation goes here
+    printf("bm_set_crc32_custom_parameters\n");
   }
 
   void bm_reset_state() {

@@ -47,6 +47,12 @@ actionA
 aabbccddeeff 
 22
 bm_mt_add_entry
+RangeOne
+RANGE: 00000022->0000144b
+actionA
+aabbccddeeff 
+22
+bm_mt_add_entry
 ExactOneNA
 EXACT: 0abcde
 actionA
