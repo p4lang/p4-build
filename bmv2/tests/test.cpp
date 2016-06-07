@@ -108,6 +108,14 @@ int main() {
                                                22 /* priority */,
                                                &actionA_action_spec,
                                                &entry_hdl);
+
+  p4_pd_test_RangeOne_match_spec_t RangeOne_match_spec = {0x22000000,
+                                                          0x4b140000};
+  p4_pd_test_RangeOne_table_add_with_actionA(sess_hdl, dev_tgt,
+                                             &RangeOne_match_spec,
+                                             22 /* priority */,
+                                             &actionA_action_spec,
+                                             &entry_hdl);
   
   /* we want the 20-bit key to be abcde (in network order)
      which means the 4 bytes are 00 0a bc de (in network order)

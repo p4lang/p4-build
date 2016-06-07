@@ -92,6 +92,16 @@ table TernaryOne {
     size: 512;
 }
 
+table RangeOne {
+    reads {
+         header_test.field32 : range;
+    }
+    actions {
+        actionA;
+    }
+    size: 512;
+}
+
 table ExactOneNA {
     reads {
          header_test.field20 : exact;
@@ -257,6 +267,7 @@ control ingress {
     apply(ExactOne);
     apply(LpmOne);
     apply(TernaryOne);
+    apply(RangeOne);
     apply(ExactOneNA);
     apply(ExactTwo);
     apply(ExactAndValid);

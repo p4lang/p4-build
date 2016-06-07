@@ -60,11 +60,16 @@ public:
       break;
     case BmMatchParamType::type::TERNARY:
       std::cout << "TERNARY: "
-		<<ToHex(param.ternary.key) << "&&&" << ToHex(param.ternary.mask);
+		<< ToHex(param.ternary.key) << "&&&"
+                << ToHex(param.ternary.mask);
       break;
     case BmMatchParamType::type::VALID:
       std::cout << "VALID: "
-		<<std::boolalpha << param.valid.key << std::noboolalpha;
+		<< std::boolalpha << param.valid.key << std::noboolalpha;
+      break;
+    case BmMatchParamType::type::RANGE:
+      std::cout << "RANGE: "
+		<< ToHex(param.range.start) << "->" << ToHex(param.range.end_);
       break;
     default:
       assert(0 && "invalid match type");
