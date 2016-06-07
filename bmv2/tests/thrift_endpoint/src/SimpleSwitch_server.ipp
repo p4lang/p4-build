@@ -49,15 +49,27 @@ class SimpleSwitchHandler : virtual public SimpleSwitchIf {
     return 0;
   }
 
-  int32_t set_egress_queue_depth(const int32_t depth_pkts) {
+  int32_t set_egress_queue_depth(const int32_t port_num, const int32_t depth_pkts) {
     // Your implementation goes here
     printf("set_egress_queue_depth\n");
     return 0;
   }
 
-  int32_t set_egress_queue_rate(const int64_t rate_pps) {
+  int32_t set_all_egress_queue_depths(const int32_t depth_pkts) {
+    // Your implementation goes here
+    printf("set_all_egress_queue_depths\n");
+    return 0;
+  }
+
+  int32_t set_egress_queue_rate(const int32_t port_num, const int64_t rate_pps) {
     // Your implementation goes here
     printf("set_egress_queue_rate\n");
+    return 0;
+  }
+
+  int32_t set_all_egress_queue_rates(const int64_t rate_pps) {
+    // Your implementation goes here
+    printf("set_all_egress_queue_rates\n");
     return 0;
   }
 
