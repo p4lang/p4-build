@@ -28,6 +28,9 @@ namespace bm_runtime { namespace standard {
 
 class StandardHandler : virtual public StandardIf {
 public:
+  // a trick for testing get_entry, stores the last entry added
+  BmMtEntry most_recent_entry{};
+
   StandardHandler() { }
 
   std::string ToHex(const std::string& s, bool upper_case = false) {
@@ -87,6 +90,13 @@ public:
     print_spec(action_data);
     if(options.__isset.priority)
       std::cout << options.priority << std::endl;
+    most_recent_entry.entry_handle = 0;
+    most_recent_entry.match_key = match_key;
+    most_recent_entry.options = options;
+    BmActionEntry &action_entry = most_recent_entry.action_entry;
+    action_entry.action_type = BmActionEntryType::ACTION_DATA;
+    action_entry.__set_action_name(action_name);
+    action_entry.__set_action_data(action_data);
     return 0;
   }
 
@@ -247,8 +257,10 @@ public:
   }
 
   void bm_mt_get_entry(BmMtEntry& _return, const int32_t cxt_id, const std::string& table_name, const BmEntryHandle entry_handle) {
-    // Your implementation goes here
-    printf("bm_mt_get_entry\n");
+    std::cout << "bm_mt_get_entry" << std::endl
+              << table_name << std::endl
+              << entry_handle << std::endl;
+    _return = most_recent_entry;
   }
 
   void bm_mt_get_default_entry(BmActionEntry& _return, const int32_t cxt_id, const std::string& table_name) {

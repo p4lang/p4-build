@@ -1,6 +1,6 @@
 ./pdtest > test.output 2>/dev/null
 DIFF=$(diff test.output test.output.ref) 
-if [ "$DIFF" != "" ] 
+if [ $? -ne 0 ] 
 then
     echo "FAIL!"
     exit 1
