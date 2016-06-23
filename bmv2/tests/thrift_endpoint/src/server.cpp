@@ -97,3 +97,9 @@ int start_server() {
   std::this_thread::sleep_for(std::chrono::seconds(2));
   return 0;
 }
+
+extern "C" {
+int c_start_server() {
+    return start_server();
+}
+}

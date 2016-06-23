@@ -1,4 +1,4 @@
-./test > test.output 2>/dev/null
+./pdtest > test.output 2>/dev/null
 DIFF=$(diff test.output test.output.ref) 
 if [ "$DIFF" != "" ] 
 then

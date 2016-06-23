@@ -27,6 +27,8 @@ addons:
       - pkg-config
       - g++-4.8
       - libssl-dev
+      - libnl-3-dev
+      - libc6
 
 before_install:
   - wget https://s3-us-west-2.amazonaws.com/p4lang/thrift_bin.tar.gz
@@ -41,9 +43,10 @@ before_install:
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/nanomsg/lib
   - bash CI/travis/install-bmv2.sh
   - bash CI/travis/install-p4c-bmv2.sh
+  - bash CI/travis/install-p4ofagent.sh
   - export PATH=$PATH:$HOME/bmv2/bin/
-  - export LDFLAGS="$LDFLAGS -L$HOME/bmv2/lib"
-  - export CPPFLAGS="$CPPFLAGS -I$HOME/bmv2/include"
+  - export LDFLAGS="$LDFLAGS -L$HOME/bmv2/lib -L$HOME/p4ofagent/lib"
+  - export CPPFLAGS="$CPPFLAGS -I$HOME/bmv2/include -I$HOME/p4ofagent/include"
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/bmv2/lib
 
 cache:
@@ -51,10 +54,18 @@ cache:
     - $HOME/nanomsg
 
 install:
-  - export P4_NAME="test"
-  - export P4_PREFIX="test"
-  - export P4_PATH="`pwd`/bmv2/tests/test.p4"
-  - ./autogen.sh; ./configure 'CXX=g++-4.8' --with-bmv2; make -j2
+  - ./autogen.sh; 
 
 script:
+  - export P4_NAME="pdtest"
+  - export P4_PREFIX="pdtest"
+  - export P4_PATH="`pwd`/bmv2/tests/pdtest/pdtest.p4"
+  - ./configure 'CXX=g++-4.8' --with-bmv2; make -j2
+  - make check
+  - make clean
+  - export P4_NAME="oftest"
+  - export P4_PREFIX="oftest"
+  - export P4_PATH="`pwd`/bmv2/tests/openflow/oftest.p4"
+  - export P4C_BM_FLAGS="--plugin of --openflow-mapping-dir `pwd`/bmv2/tests/openflow --openflow-mapping-mod oftest"
+  - ./configure 'CXX=g++-4.8' --with-bmv2 --with-of; make -j2
   - make check

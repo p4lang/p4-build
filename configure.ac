@@ -17,6 +17,10 @@ AC_CONFIG_MACRO_DIR([m4])
 # will abort if there is no Python interpreter >= 2.7
 AM_PATH_PYTHON([2.7])
 
+# Enable Openflow
+AC_WITH([of], [want_of=yes], [])
+AM_CONDITIONAL([COND_PLUGIN_OPENFLOW], [test "$want_of" = yes])
+
 want_bmv2=no
 AC_ARG_WITH([bmv2],
     AS_HELP_STRING([--with-bmv2], [Build for bmv2 target]),
@@ -45,10 +49,14 @@ AS_IF([test "$P4_PREFIX" = ""], [
   AC_SUBST([P4_PREFIX])
 ])
 
-diff_w_test=$($PYTHON $srcdir/tools/diff.py $P4_PATH $srcdir/bmv2/tests/test.p4)
-AM_CONDITIONAL([BMV2_TEST_ENV],
-  [test "$P4_NAME" = "test" && test "$P4_PREFIX" = "test" && test "$diff_w_test" = "no"])
-AM_COND_IF([BMV2_TEST_ENV], [AC_MSG_NOTICE([Bmv2 test environment detected])])
+# Test environments
+diff_w_pdtest=$($PYTHON $srcdir/tools/diff.py $P4_PATH $srcdir/bmv2/tests/pdtest/pdtest.p4)
+AM_CONDITIONAL([BMV2_PDTEST_ENV], [test "$P4_NAME" = "pdtest"&& test "$P4_PREFIX" = "pdtest" && test "$diff_w_pdtest" = "no"])
+AM_COND_IF([BMV2_PDTEST_ENV], [AC_MSG_NOTICE([Bmv2 test environment detected])])
+
+diff_w_oftest=$($PYTHON $srcdir/tools/diff.py $P4_PATH $srcdir/bmv2/tests/openflow/oftest.p4)
+AM_CONDITIONAL([BMV2_OFTEST_ENV], [test "$P4_NAME" = "oftest" &&test "$P4_PREFIX" = "oftest" && test "$diff_w_oftest" = "no"])
+AM_COND_IF([BMV2_OFTEST_ENV], [AC_MSG_NOTICE([Bmv2 test environment detected])])
 
 AC_ARG_VAR([P4C_BM_FLAGS], [Options to pass to the p4c-bm compiler])
 
@@ -133,7 +141,9 @@ AC_SUBST([MY_PYTHONPATH], ["$PYTHON_DIR"])
 # Generate makefiles
 AC_CONFIG_FILES([Makefile
                  bmv2/Makefile
-                 bmv2/tests/Makefile])
+                 bmv2/tests/Makefile
+                 bmv2/tests/pdtest/Makefile
+                 bmv2/tests/openflow/Makefile])
 
 # Generate other files
 AC_CONFIG_FILES([tools/produce_deps.py], [chmod +x tools/produce_deps.py])

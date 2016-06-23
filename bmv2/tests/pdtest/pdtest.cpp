@@ -46,8 +46,8 @@ int main() {
   p4_pd_entry_hdl_t entry_hdl;
 
   /* P4 dependent initialization */
-  p4_pd_test_init();
-  p4_pd_test_assign_device(dev_tgt.device_id, NULL, DEVICE_THRIFT_PORT);
+  p4_pd_pdtest_init();
+  p4_pd_pdtest_assign_device(dev_tgt.device_id, NULL, DEVICE_THRIFT_PORT);
   
   p4_pd_sess_hdl_t sess_hdl;
   p4_pd_client_init(&sess_hdl);
@@ -56,9 +56,9 @@ int main() {
     
   /* TEST BEGIN */
   
-  p4_pd_test_actionA_action_spec actionA_action_spec =
+  p4_pd_pdtest_actionA_action_spec actionA_action_spec =
     {0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
-  p4_pd_test_actionB_action_spec actionB_action_spec =
+  p4_pd_pdtest_actionB_action_spec actionB_action_spec =
     {0xab};
 
   p4_pd_bytes_meter_spec_t meter_spec;
@@ -69,49 +69,49 @@ int main() {
   
   // right now PD assumes everything is passed in network byte order, so this
   // will actually be interpreted as byte string "bb00aa00"
-  p4_pd_test_ExactOne_match_spec_t ExactOne_match_spec = {0x00aa00bb};
-  p4_pd_test_ExactOne_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ExactOne_match_spec_t ExactOne_match_spec = {0x00aa00bb};
+  p4_pd_pdtest_ExactOne_table_add_with_actionA(sess_hdl, dev_tgt,
                                              &ExactOne_match_spec,
                                              &actionA_action_spec,
                                              &meter_spec,
                                              &entry_hdl);
 
-  p4_pd_test_ExactOne_table_modify_with_actionB(sess_hdl, dev_tgt.device_id,
+  p4_pd_pdtest_ExactOne_table_modify_with_actionB(sess_hdl, dev_tgt.device_id,
                                                 entry_hdl,
                                                 &actionB_action_spec,
                                                 &meter_spec);
 
   p4_pd_counter_value_t counter_value;
-  p4_pd_test_ExactOne_read_counter(sess_hdl, dev_tgt, entry_hdl, &counter_value);  
+  p4_pd_pdtest_ExactOne_read_counter(sess_hdl, dev_tgt, entry_hdl, &counter_value);  
 
-  p4_pd_test_ExactOne_reset_counters(sess_hdl, dev_tgt);
+  p4_pd_pdtest_ExactOne_reset_counters(sess_hdl, dev_tgt);
 
-  p4_pd_test_ExactOne_table_delete(sess_hdl, dev_tgt.device_id, entry_hdl);
+  p4_pd_pdtest_ExactOne_table_delete(sess_hdl, dev_tgt.device_id, entry_hdl);
 
-  p4_pd_test_ExactOneAgeing_match_spec_t ExactOneAgeing_match_spec = {0x00aa00bb};
-  p4_pd_test_ExactOneAgeing_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ExactOneAgeing_match_spec_t ExactOneAgeing_match_spec = {0x00aa00bb};
+  p4_pd_pdtest_ExactOneAgeing_table_add_with_actionA(sess_hdl, dev_tgt,
 						   &ExactOneAgeing_match_spec,
 						   &actionA_action_spec,
 						   2000, // ttl
 						   &entry_hdl);
   
-  p4_pd_test_LpmOne_match_spec_t LpmOne_match_spec = {0x12345678, 12};
-  p4_pd_test_LpmOne_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_LpmOne_match_spec_t LpmOne_match_spec = {0x12345678, 12};
+  p4_pd_pdtest_LpmOne_table_add_with_actionA(sess_hdl, dev_tgt,
                                            &LpmOne_match_spec,
                                            &actionA_action_spec,
                                            &entry_hdl);
 
-  p4_pd_test_TernaryOne_match_spec_t TernaryOne_match_spec = {0x10101010,
+  p4_pd_pdtest_TernaryOne_match_spec_t TernaryOne_match_spec = {0x10101010,
                                                               0xff000a00};
-  p4_pd_test_TernaryOne_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_TernaryOne_table_add_with_actionA(sess_hdl, dev_tgt,
                                                &TernaryOne_match_spec,
                                                22 /* priority */,
                                                &actionA_action_spec,
                                                &entry_hdl);
 
-  p4_pd_test_RangeOne_match_spec_t RangeOne_match_spec = {0x22000000,
+  p4_pd_pdtest_RangeOne_match_spec_t RangeOne_match_spec = {0x22000000,
                                                           0x4b140000};
-  p4_pd_test_RangeOne_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_RangeOne_table_add_with_actionA(sess_hdl, dev_tgt,
                                              &RangeOne_match_spec,
                                              22 /* priority */,
                                              &actionA_action_spec,
@@ -120,25 +120,25 @@ int main() {
   /* we want the 20-bit key to be abcde (in network order)
      which means the 4 bytes are 00 0a bc de (in network order)
      which means the int is de bc 0a 00 (in host order) */
-  p4_pd_test_ExactOneNA_match_spec_t ExactOneNA_match_spec = {0xdebc0a00};
-  p4_pd_test_ExactOneNA_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ExactOneNA_match_spec_t ExactOneNA_match_spec = {0xdebc0a00};
+  p4_pd_pdtest_ExactOneNA_table_add_with_actionA(sess_hdl, dev_tgt,
                                                &ExactOneNA_match_spec,
                                                &actionA_action_spec,
                                                &entry_hdl);
   
-  p4_pd_test_ExactTwo_match_spec_t ExactTwo_match_spec = {0xaabbccdd, 0xeeff};
-  p4_pd_test_ExactTwo_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ExactTwo_match_spec_t ExactTwo_match_spec = {0xaabbccdd, 0xeeff};
+  p4_pd_pdtest_ExactTwo_table_add_with_actionA(sess_hdl, dev_tgt,
                                              &ExactTwo_match_spec,
                                              &actionA_action_spec,
                                              &entry_hdl);
 
-  p4_pd_test_ExactAndValid_match_spec_t ExactAndValid_match_spec = {0xaabbccdd, 1u};
-  p4_pd_test_ExactAndValid_table_add_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ExactAndValid_match_spec_t ExactAndValid_match_spec = {0xaabbccdd, 1u};
+  p4_pd_pdtest_ExactAndValid_table_add_with_actionA(sess_hdl, dev_tgt,
 						  &ExactAndValid_match_spec,
 						  &actionA_action_spec,
 						  &entry_hdl);
   
-  p4_pd_test_ExactOne_set_default_action_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ExactOne_set_default_action_actionA(sess_hdl, dev_tgt,
                                                  &actionA_action_spec,
                                                  &meter_spec,
                                                  &entry_hdl);
@@ -147,33 +147,33 @@ int main() {
 
   p4_pd_mbr_hdl_t mbr_hdl;
 
-  p4_pd_test_ActProf_add_member_with_actionA(sess_hdl, dev_tgt,
+  p4_pd_pdtest_ActProf_add_member_with_actionA(sess_hdl, dev_tgt,
 					     &actionA_action_spec,
 					     &mbr_hdl);
 
-  p4_pd_test_ActProf_modify_member_with_actionB(sess_hdl, dev_tgt.device_id,
+  p4_pd_pdtest_ActProf_modify_member_with_actionB(sess_hdl, dev_tgt.device_id,
 						mbr_hdl,
 						&actionB_action_spec);
 
-  p4_pd_test_Indirect_match_spec_t Indirect_match_spec = {0xaabbccdd};
-  p4_pd_test_Indirect_add_entry(sess_hdl, dev_tgt,
+  p4_pd_pdtest_Indirect_match_spec_t Indirect_match_spec = {0xaabbccdd};
+  p4_pd_pdtest_Indirect_add_entry(sess_hdl, dev_tgt,
 				&Indirect_match_spec, mbr_hdl,
 				&entry_hdl);
 
-  p4_pd_test_Indirect_table_delete(sess_hdl, dev_tgt.device_id, entry_hdl);
+  p4_pd_pdtest_Indirect_table_delete(sess_hdl, dev_tgt.device_id, entry_hdl);
 
-  p4_pd_test_Indirect_set_default_entry(sess_hdl, dev_tgt,
+  p4_pd_pdtest_Indirect_set_default_entry(sess_hdl, dev_tgt,
 					mbr_hdl, &entry_hdl);
 
-  p4_pd_test_ActProf_del_member(sess_hdl, dev_tgt.device_id, mbr_hdl);
+  p4_pd_pdtest_ActProf_del_member(sess_hdl, dev_tgt.device_id, mbr_hdl);
 
   /* meter test */
 
   // indirect meter
-  p4_pd_test_meter_set_MeterA(sess_hdl, dev_tgt, 16, &meter_spec);
+  p4_pd_pdtest_meter_set_MeterA(sess_hdl, dev_tgt, 16, &meter_spec);
 
   // direct meter
-  p4_pd_test_meter_set_ExactOne_meter(sess_hdl, dev_tgt, 18, &meter_spec);
+  p4_pd_pdtest_meter_set_ExactOne_meter(sess_hdl, dev_tgt, 18, &meter_spec);
 
   /* multicast */
   
@@ -191,23 +191,23 @@ int main() {
   /* counters */
 
   // indirect counter
-  p4_pd_test_counter_read_CounterA(sess_hdl, dev_tgt, 17, 0);
+  p4_pd_pdtest_counter_read_CounterA(sess_hdl, dev_tgt, 17, 0);
   counter_value.bytes = 12;
   counter_value.packets = 34;
-  p4_pd_test_counter_write_CounterA(sess_hdl, dev_tgt, 17, counter_value);
+  p4_pd_pdtest_counter_write_CounterA(sess_hdl, dev_tgt, 17, counter_value);
 
-  p4_pd_test_counter_hw_sync_CounterA(
+  p4_pd_pdtest_counter_hw_sync_CounterA(
       sess_hdl, dev_tgt,
       [](int d, void *c){ std::cout << "hw_sync_CounterA\n"; }, nullptr);
   std::this_thread::sleep_for(std::chrono::seconds(2));
 
   // direct counter
-  p4_pd_test_counter_read_ExactOne_counter(sess_hdl, dev_tgt, 18, 0);
-  p4_pd_test_counter_write_ExactOne_counter(sess_hdl, dev_tgt, 18, counter_value);
+  p4_pd_pdtest_counter_read_ExactOne_counter(sess_hdl, dev_tgt, 18, 0);
+  p4_pd_pdtest_counter_write_ExactOne_counter(sess_hdl, dev_tgt, 18, counter_value);
 
   /* registers */
 
-  p4_pd_test_register_reset_RegisterA(sess_hdl, dev_tgt);
+  p4_pd_pdtest_register_reset_RegisterA(sess_hdl, dev_tgt);
 
   /* mirroring */
   p4_pd_mirror_session_create(sess_hdl, dev_tgt,
@@ -218,11 +218,11 @@ int main() {
 
   /* learning */
   uint64_t timeout_us = 64000;  // 64 ms
-  p4_pd_test_set_learning_timeout(sess_hdl, dev_tgt.device_id, timeout_us);
+  p4_pd_pdtest_set_learning_timeout(sess_hdl, dev_tgt.device_id, timeout_us);
 
   /* END TEST */
 
-  p4_pd_test_remove_device(dev_tgt.device_id);
+  p4_pd_pdtest_remove_device(dev_tgt.device_id);
 
   p4_pd_client_cleanup(sess_hdl);
 
