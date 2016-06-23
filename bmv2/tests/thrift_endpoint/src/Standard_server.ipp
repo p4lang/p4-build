@@ -246,6 +246,11 @@ public:
     printf("bm_mt_get_entries\n");
   }
 
+  void bm_mt_get_entry(BmMtEntry& _return, const int32_t cxt_id, const std::string& table_name, const BmEntryHandle entry_handle) {
+    // Your implementation goes here
+    printf("bm_mt_get_entry\n");
+  }
+
   void bm_mt_get_default_entry(BmActionEntry& _return, const int32_t cxt_id, const std::string& table_name) {
     // Your implementation goes here
     printf("bm_mt_get_default_entry\n");
@@ -256,9 +261,19 @@ public:
     printf("bm_mt_indirect_get_members\n");
   }
 
+  void bm_mt_indirect_get_member(BmMtIndirectMember& _return, const int32_t cxt_id, const std::string& table_name, const BmMemberHandle mbr_handle) {
+    // Your implementation goes here
+    printf("bm_mt_indirect_get_member\n");
+  }
+
   void bm_mt_indirect_ws_get_groups(std::vector<BmMtIndirectWsGroup> & _return, const int32_t cxt_id, const std::string& table_name) {
     // Your implementation goes here
     printf("bm_mt_indirect_ws_get_groups\n");
+  }
+
+  void bm_mt_indirect_ws_get_group(BmMtIndirectWsGroup& _return, const int32_t cxt_id, const std::string& table_name, const BmGroupHandle grp_handle) {
+    // Your implementation goes here
+    printf("bm_mt_indirect_ws_get_group\n");
   }
 
   void bm_counter_read(BmCounterValue& _return, const int32_t cxt_id, const std::string& counter_name, const int32_t index) {
