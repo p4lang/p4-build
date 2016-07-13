@@ -40,14 +40,14 @@ int main() {
   /* P4 dependent initialization */
   p4_pd_oftest_init();
   p4_pd_oftest_assign_device(dev_tgt.device_id, NULL, DEVICE_THRIFT_PORT);
-  
+
   p4_pd_sess_hdl_t sess_hdl;
   p4_pd_client_init(&sess_hdl);
-  
+
   // just a couple random calls into the library to make sure it works
   ofpat_pipeline_key_t junk_key;
-  memset (&junk_key, 0, sizeof(junk_key));
-  
+  memset(&junk_key, 0, sizeof(junk_key));
+
   uint64_t junk_index = 4326;
   uint16_t junk_egr_port = 2;
 
