@@ -71,6 +71,11 @@ public:
     // Your implementation goes here
     printf("bm_mc_set_lag_membership\n");
   }
+
+  void bm_mc_get_entries(std::string& _return, const int32_t cxt_id) {
+    // Your implementation goes here
+    printf("bm_mc_get_entries\n");
+  }
 };
 
 } }

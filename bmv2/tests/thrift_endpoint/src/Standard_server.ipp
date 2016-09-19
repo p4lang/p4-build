@@ -251,6 +251,11 @@ public:
     }
   }
 
+  void bm_mt_get_meter_rates(std::vector<BmMeterRateConfig> & _return, const int32_t cxt_id, const std::string& table_name, const BmEntryHandle entry_handle) {
+    // Your implementation goes here
+    printf("bm_mt_get_meter_rates\n");
+  }
+
   void bm_mt_get_entries(std::vector<BmMtEntry> & _return, const int32_t cxt_id, const std::string& table_name) {
     // Your implementation goes here
     printf("bm_mt_get_entries\n");
@@ -351,6 +356,11 @@ public:
     }
   }
 
+  void bm_meter_get_rates(std::vector<BmMeterRateConfig> & _return, const int32_t cxt_id, const std::string& meter_array_name, const int32_t index) {
+    // Your implementation goes here
+    printf("bm_meter_get_rates\n");
+  }
+
   BmRegisterValue bm_register_read(const int32_t cxt_id, const std::string& register_name, const int32_t index) {
     // Your implementation goes here
     printf("bm_register_read\n");
@@ -370,6 +380,16 @@ public:
   void bm_register_reset(const int32_t cxt_id, const std::string& register_array_name) {
     std::cout << "bm_register_reset" << std::endl
               << register_array_name << std::endl;
+  }
+
+  void bm_parse_vset_add(const int32_t cxt_id, const std::string& parse_vset_name, const BmParseVSetValue& value) {
+    // Your implementation goes here
+    printf("bm_parse_vset_add\n");
+  }
+
+  void bm_parse_vset_remove(const int32_t cxt_id, const std::string& parse_vset_name, const BmParseVSetValue& value) {
+    // Your implementation goes here
+    printf("bm_parse_vset_remove\n");
   }
 
   void bm_dev_mgr_add_port(const std::string& iface_name, const int32_t port_num, const std::string& pcap_path) {
