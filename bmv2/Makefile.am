@@ -72,6 +72,10 @@ pd_files.ts : $(P4_PATH) $(refdeps)
 	@rm -f pd_files.tmp
 	@touch pd_files.tmp
 	PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/$(P4_NAME)/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
+if WITH_CUSTOMCOMPILER
+	echo "Using Custom compiler"
+	$(CUSTOM_COMPILER) --p4-14 -o $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
+endif
 	@mv -f pd_files.tmp $@
 $(pd_files) $(pd_p4_IDL) $(pd_p4_src) $(plugin_files) : pd_files.ts
 ## Recover from the removal of $@

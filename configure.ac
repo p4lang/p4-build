@@ -28,6 +28,13 @@ AC_ARG_WITH([bmv2],
 
 AM_CONDITIONAL([WITH_BMV2], [test "$want_bmv2" = yes])
 
+want_customcompiler=no
+CUSTOM_COMPILER=
+AC_ARG_WITH([compiler],
+    AS_HELP_STRING([--with-compiler=path/to/compiler],
+                   [Build with custom compiler, needs path to compiler]),
+    [want_customcompiler=yes customcompiler="$withval"], [])
+
 AC_ARG_VAR([P4_NAME], [Name of the P4 program])
 AS_IF([test "$P4_NAME" = ""], [
   AC_MSG_ERROR([Environment variable P4_NAME needs to be set])
@@ -122,6 +129,8 @@ AM_CONDITIONAL([P4THRIFT], [test "x$WITH_P4THRIFT" != "x"])
 AS_IF([test x"$THRIFT" = x],
 [AC_MSG_ERROR([cannot find thrift])])
 
+AM_CONDITIONAL([WITH_CUSTOMCOMPILER], [test "$want_customcompiler" = yes])
+
 # Check for libjudy, libnanomsg, pthread
 AC_CHECK_LIB([Judy], [Judy1Next], [], [AC_MSG_ERROR([Missing libJudy])])
 AC_CHECK_LIB([nanomsg], [nn_errno], [], [AC_MSG_ERROR([Missing libnanomsg])])
@@ -137,6 +146,7 @@ AC_LANG_POP(C++)
 AC_PROG_SED
 
 AC_SUBST([MY_PYTHONPATH], ["$PYTHON_DIR"])
+AC_SUBST([CUSTOM_COMPILER], ["$customcompiler"])
 
 # Generate makefiles
 AC_CONFIG_FILES([Makefile
@@ -164,3 +174,7 @@ AS_ECHO("P4_PATH ....................... : $P4_PATH")
 AS_ECHO("P4_NAME ....................... : $P4_NAME")
 AS_ECHO("P4_PREFIX ..................... : $P4_PREFIX")
 AS_ECHO("Compile for bmv2 .............. : $want_bmv2")
+AS_ECHO("Custom Compile ................ : $want_customcompiler")
+AS_IF([test "$want_customcompiler" = "yes"], [
+  AS_ECHO("Custom Compiler ............... : $customcompiler")
+])
