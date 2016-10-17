@@ -273,6 +273,11 @@ public:
     printf("bm_mt_get_default_entry\n");
   }
 
+  void bm_mt_get_entry_from_key(BmMtEntry& _return, const int32_t cxt_id, const std::string& table_name, const BmMatchParams& match_key, const BmAddEntryOptions& options) {
+    // Your implementation goes here
+    printf("bm_mt_get_entry_from_key\n");
+  }
+
   void bm_mt_indirect_get_members(std::vector<BmMtIndirectMember> & _return, const int32_t cxt_id, const std::string& table_name) {
     // Your implementation goes here
     printf("bm_mt_indirect_get_members\n");
