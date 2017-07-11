@@ -68,10 +68,14 @@ endif
 # anyone with a better solution is welcome to change this
 refdeps := $(shell ../tools/produce_deps.py @P4_PATH@)
 
+# PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/$(P4_NAME)/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
+
 pd_files.ts : $(P4_PATH) $(refdeps)
 	@rm -f pd_files.tmp
 	@touch pd_files.tmp
-	PYTHONPATH=$$PYTHONPATH:$(MY_PYTHONPATH) $(P4C_BM) --pd $(builddir)/$(P4_NAME)/ --p4-prefix $(P4_PREFIX) $(P4C_BM_FLAGS) --json $(builddir)/$(P4_JSON_OUTPUT) $(P4_PATH)
+	p4c-bm2-ss --p4v 14 -o $(builddir)/$(P4_JSON_OUTPUT) --p4runtime-file $(builddir)/$(P4_JSON_OUTPUT).p4runtime $(P4_PATH)
+	mkdir -p $(builddir)/$(P4_NAME)
+	p4runtime-to-pd $(builddir)/$(P4_JSON_OUTPUT).p4runtime --pd $(builddir)/$(P4_NAME) --p4-prefix $(P4_PREFIX)
 	@mv -f pd_files.tmp $@
 $(pd_files) $(pd_p4_IDL) $(pd_p4_src) $(plugin_files) : pd_files.ts
 ## Recover from the removal of $@

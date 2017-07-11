@@ -84,7 +84,7 @@ adl_RECURSIVE_EVAL([$pythondir], [PYTHON_DIR])
 adl_RECURSIVE_EVAL([$libdir], [LIB_DIR])
 
 AS_IF([test "$want_bmv2" = yes], [
-    AC_PATH_PROG([P4C_BM], [p4c-bmv2], [], [$PATH$PATH_SEPARATOR$BIN_DIR])
+    AC_PATH_PROG([P4C_BM], [p4c-bm2-ss], [], [$PATH$PATH_SEPARATOR$BIN_DIR])
     AS_IF([test x"$P4C_BM" = x], AC_MSG_ERROR([cannot find p4c-bmv2 compiler]))
 
     AX_SAVE_FLAGS(SAVE_1)
